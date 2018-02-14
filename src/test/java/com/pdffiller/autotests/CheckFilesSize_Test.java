@@ -14,8 +14,6 @@ import static org.testng.Assert.assertEquals;
 
 public class CheckFilesSize_Test {
 
-    private final String PARTIAL_NAME_OF_TARGET_FILES = "How To";
-
     //TestData
     private final String EMAIL = DataGenerator.generateEmailAddress();
     private final String PASSWORD = DataGenerator.getRandomString();
@@ -55,9 +53,11 @@ public class CheckFilesSize_Test {
         documentPage.handleHelpDialog();
         documentPage.clickSaveAsButton();
 
-        saveAsPage.saveTwoSameFilesWithDifferentNumberOfPages(0);
+        fileUtils.deleteTestFilesInDownloadsFolder();
+        saveAsPage.saveFileWithAllPagesAndCloseDocHasBeenSavedWindow();
+        saveAsPage.saveFileWithOnlyFirstPage();
 
-        assertEquals(fileUtils.checkIfTwoFilesHaveDifferentLength(PARTIAL_NAME_OF_TARGET_FILES), true);
+        assertEquals(fileUtils.checkIfTwoTestFilesHaveDifferentLength(), true);
     }
 
     @AfterTest

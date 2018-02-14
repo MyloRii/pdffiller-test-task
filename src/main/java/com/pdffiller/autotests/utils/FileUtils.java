@@ -1,27 +1,33 @@
 package com.pdffiller.autotests.utils;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 final public class FileUtils {
 
+    private static int numberOfFiles = 0;
     private final int MAX_TIMEOUT_TO_DOWNLOAD_FILE = 60; // Maximum time limit to download a file (in seconds)
+    private final String TEST_FILE_NAME = "TestFile";
+    private final String PDF_EXTENSION = ".pdf";
     private final String DOWNLOAD_FOLDER = getDownloadFolderLocation();
 
     public void waitForFileDownload(String fileName) {
         Path pathToFile = Paths.get(DOWNLOAD_FOLDER, fileName);
         try {
             waitUntilDownloadFinishes(pathToFile, MAX_TIMEOUT_TO_DOWNLOAD_FILE);
-        } catch (InterruptedException e) {
+            Files.move(pathToFile, pathToFile.resolveSibling(TEST_FILE_NAME + numberOfFiles + PDF_EXTENSION));
+            numberOfFiles++;
+        } catch (InterruptedException | IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void deleteAllPDFfilesInDownloadsFolder() {
+    public void deleteTestFilesInDownloadsFolder() {
         File dir = new File(DOWNLOAD_FOLDER);
-        File[] files = dir.listFiles((dir1, name) -> name.endsWith(".pdf"));
+        File[] files = dir.listFiles((dir1, name) -> name.startsWith(TEST_FILE_NAME));
         if (files.length > 0) {
             for (File file : files) {
                 file.delete();
@@ -29,13 +35,10 @@ final public class FileUtils {
         }
     }
 
-    public boolean checkIfTwoFilesHaveDifferentLength(String partialNameOfFile) {
+    public boolean checkIfTwoTestFilesHaveDifferentLength() {
         File dir = new File(DOWNLOAD_FOLDER);
-        File[] files = dir.listFiles((dir1, name) -> name.contains(partialNameOfFile));
-        if (files.length == 2) {
-            return files[0].length() != files[1].length();
-        }
-        return false;
+        File[] files = dir.listFiles((dir1, name) -> name.startsWith(TEST_FILE_NAME));
+        return files.length == 2 && files[0].length() != files[1].length();
     }
 
     private String getDownloadFolderLocation() {

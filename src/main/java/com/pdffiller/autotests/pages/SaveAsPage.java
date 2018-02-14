@@ -44,17 +44,12 @@ public class SaveAsPage extends BasePage {
         fileUtils.waitForFileDownload(documentName.getText() + PDF_EXTENSION);
     }
 
-    public void saveTwoSameFilesWithDifferentNumberOfPages(int pageNumberForSecondFile) {
-        fileUtils.deleteAllPDFfilesInDownloadsFolder();
-        saveFileWithAllPagesAndCloseDocHasBeenSavedWindow();
-        saveFileWithOneSpecificPage(pageNumberForSecondFile);
-        fileUtils.waitForFileDownload(documentName.getText() + " (1)" + PDF_EXTENSION);
-    }
-
-    public void saveFileWithOneSpecificPage(int pageNumber) {
+    public void saveFileWithOnlyFirstPage() {
         clickUnselectAllButton();
-        driverUtils.clickButton(listOfDocumentPages.get(pageNumber));
+        driverUtils.clickButton(listOfDocumentPages.get(0));
         driverUtils.clickButton(btnSaveAs);
+        closeDocHasBeenSavedWindow();
+        fileUtils.waitForFileDownload(documentName.getText() + PDF_EXTENSION);
     }
 
     public void clickSelectAllButton() {
