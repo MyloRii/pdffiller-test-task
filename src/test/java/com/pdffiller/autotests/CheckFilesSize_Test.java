@@ -55,7 +55,7 @@ public class CheckFilesSize_Test {
 
         fileUtils.deleteTestFilesInDownloadsFolder();
         saveAsPage.saveFileWithAllPagesAndCloseDocHasBeenSavedWindow();
-        saveAsPage.saveFileWithOnlyFirstPage();
+        saveAsPage.saveFileWithOnlyFirstPageAndCloseDocHasBeenSavedWindow();
 
         assertEquals(fileUtils.checkIfTwoTestFilesHaveDifferentLength(), true);
     }

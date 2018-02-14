@@ -44,7 +44,7 @@ public class SaveAsPage extends BasePage {
         fileUtils.waitForFileDownload(documentName.getText() + PDF_EXTENSION);
     }
 
-    public void saveFileWithOnlyFirstPage() {
+    public void saveFileWithOnlyFirstPageAndCloseDocHasBeenSavedWindow() {
         clickUnselectAllButton();
         driverUtils.clickButton(listOfDocumentPages.get(0));
         driverUtils.clickButton(btnSaveAs);
